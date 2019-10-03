@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title></title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;	
+      }
+
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+      }
+	  .marker {
+		background-image: url('mapbox-icon.png');
+		background-size: cover;
+		width: 50px;
+		height: 50px;
+		border-radius: 50%;
+		cursor: pointer;
+	  }
+	  .mapboxgl-popup {
+		max-width: 200px;
+	  }
+	  .mapboxgl-popup-content {
+		text-align: center;
+		font-family: 'Open Sans', sans-serif;
+	  }
+
+	   	
+
+	  
+    </style>
+</head>
+<body>
+<style type='text/css'>
+	#info {
+		display: block;
+		position: relative;
+		margin: 0px auto;
+		width: 50%;
+		padding: 10px;
+		border: none;
+		border-radius: 3px;
+		font-size: 12px;
+		text-align: center;
+		color: #222;
+		background: #fff;
+	}
+</style>
+<div id='map'></div>
+<pre id='info'></pre>
+<script>
+
+mapboxgl.accessToken = 'pk.eyJ1IjoiamF3YSIsImEiOiJjanBzbGVsbHAwMjZ6NDlvYXJoeWxoOXoyIn0.ODZMs4Zao0hh1rKo-KF8rg';
+
+var bounds = [
+	[-29.86021, -48.68510],
+	[35.13037, -28.41192]
+];
+	
+var map = new mapboxgl.Map({
+  container: 'map',
+  style: 'mapbox://styles/jawa/ck180q93j1o6b1dph1hywrevs',
+  center: [2.53808, -38.69401],
+  zoom: 5,
+  maxBounds: bounds 
+});
+//var v1 = new mapboxgl.LngLatBounds(
+  //new mapboxgl.LngLat(-29.86021, -48.68510),
+  //new mapboxgl.LngLat(35.13037, -28.41192)
+  //);
+//
+// map.on('mousemove', function (e) {
+	// document.getElementById('info').innerHTML =
+// e.point is the x, y coordinates of the mousemove event relative
+// to the top-left corner of the map
+		// JSON.stringify(e.point) + '<br />' +
+// e.lngLat is the longitude, latitude geographical position of the event
+	//	JSON.stringify(e.lngLat.wrap());
+//});
+
+var geojson = {
+  type: 'FeatureCollection',
+  features: [{
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [0.17368, -40.47641]
+    },
+    properties: {
+      title: 'Nevarra',
+      description: '<a href="https://www.google.com/">map</a>'
+    }
+  },
+  {
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [-8.42302, -44.64138]
+    },
+    properties: {
+      title: 'Orlais',
+      description: '<a href="https://www.google.com/">map</a>'
+    }
+  }]
+};
+
+// add markers to map
+geojson.features.forEach(function(marker) {
+
+  // create a HTML element for each feature
+  var el = document.createElement('div');
+  el.className = 'marker';
+
+  // make a marker for each feature and add to the map
+  new mapboxgl.Marker(el)
+    .setLngLat(marker.geometry.coordinates)
+  new mapboxgl.Marker(el)
+	.setLngLat(marker.geometry.coordinates)
+	.setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
+		.setHTML('<h3>' + marker.properties.title + '</h3><p>' + marker.properties.description + '</p>'))
+
+	
+  .addTo(map);
+});
+
+
+</script>
+
+</body>
+</html>
